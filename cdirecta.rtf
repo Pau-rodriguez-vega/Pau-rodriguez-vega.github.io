@@ -1,0 +1,175 @@
+{\rtf1\ansi\ansicpg1252\deff0\nouicompat\deflang1027{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil Calibri;}}
+{\colortbl ;\red0\green0\blue255;}
+{\*\generator Riched20 10.0.22621}\viewkind4\uc1 
+\pard\sa200\sl276\slmult1\f0\fs22\lang3 <!-- Aquest codi \'e9s un HTML i es diu index.html perqu\'e8 tots els navegadors busquen index.html per obrir.lo-->\par
+<!DOCTYPE html>\par
+\par
+<html lang="ca">\par
+<!-- La llengua emprada es catal\'e0, si fos castell\'e0 seria "es" i angles "en"-->\par
+  <head>\par
+    <!-- Head significa cap\'e7alera. Tots els codis de html tenen dos parts: head i body. En el head posem\par
+    contingut que no veu l'usuari o es secundari per l'usuari-->\par
+  <meta charset="UTF-8">\par
+    <!-- Tot html ha de dir quin conjunt de car\'e0cters o lletres que utilitzem. Aix\'f2 es una metainformaci\'f3 i per aix\'f2 posa meta,\par
+    utf-8 \'e9s el conjunt de car\'e0cters que utilitzem, unicode text forma de 8 bits. Utf-8 inclou \'e7,accents oberts i tancats.\par
+    Charset vol dir charater set, \'e9s el "set" que vol dir conjunt de "charactes" o car\'e0cters o lletres-->\par
+   \par
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">\par
+    <!-- El viewport \'e9s una metainformaci\'f3 de com veiem la p\'e0gina web i la veiem amb lo que diu dins de content o contingut.\par
+    Width=device-width significa que la amplada del nostre contingut ser\'e0 igual a la amplada del dispositiu (device), accepta totes:\par
+    rellotge, m\'f2bil, tauleta, pc, televisi\'f3, pantalla de cinema...Initial-scale \'e9s la escala inicial \'e9s 1.0, si fos 2.0 sortiria el doble de gran\par
+  -->\par
+  <title>C\'e0lcul de la posici\'f3 d'un robot</title>\par
+    <!--Title \'e9s el t\'edtol de la pestanya i no es el t\'edtol del document-->\par
+  <script type="text/javascript" async\par
+    src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.0/es5/tex-mml-chtml.js">\par
+    <!--Script \'e9s una etiqueta molt important perqu\'e8 ens indica que el que hi ha despr\'e9s \'e9s javascript. La l\'ednia anterior carrega matnjax que ens permet que surtin\par
+    f\'f2rmules matem\'e0tiques boniques-->\par
+  </script>\par
+  <style>\par
+    body \{\par
+      font-family: Arial, sans-serif;\par
+      margin: 20px;\par
+    \}\par
+\par
+    .equation \{\par
+      margin: 20px 0;\par
+    \}\par
+\par
+    .results \{\par
+      font-weight: bold;\par
+    \}\par
+\par
+    /* Oculta els elements de sortida per defecte */\par
+    #output, #robotCanvas \{\par
+      display: none;\par
+    \}\par
+\par
+    canvas \{\par
+      border: 1px solid black;\par
+    \}\par
+  </style>\par
+</head>\par
+<body>\par
+  <h1>C\'e0lcul de la posici\'f3 d'un robot amb dos bra\'e7os</h1>\par
+  <div>\par
+    <label for="a1">Longitud del primer bra\'e7 (a\f1\u8321?):</label>\par
+    <input type="number" id="a1" value="1" step="0.1"><br><br>\par
+\par
+    <label for="a2">Longitud del segon bra\f0\'e7 (a\f1\u8322?):</label>\par
+    <input type="number" id="a2" value="0.5" step="0.1"><br><br>\par
+\par
+    <label for="q1">Angle del primer bra\f0\'e7 (q\f1\u8321?, en graus):</label>\par
+    <input type="number" id="q1" value="45" step="0.1"><br><br>\par
+\par
+    <label for="q2">Angle del segon bra\f0\'e7 (q\f1\u8322?, en graus):</label>\par
+    <input type="number" id="q2" value="30" step="0.1"><br><br>\par
+\par
+    <button onclick="calculatePosition()">Calcula la posici\f0\'f3</button>\par
+  </div>\par
+  <div id="output"></div>\par
+  <canvas id="robotCanvas" width="400" height="400"></canvas>\par
+\par
+<script>\par
+function calculatePosition() \{\par
+  // Agafar les dades introdu\'efdes per l'usuari\par
+  let a1 = parseFloat(document.getElementById('a1').value);\par
+  let a2 = parseFloat(document.getElementById('a2').value);\par
+  let q1_deg = parseFloat(document.getElementById('q1').value); // Grados\par
+  let q2_deg = parseFloat(document.getElementById('q2').value); // Grados\par
+  let q1 = q1_deg * Math.PI / 180; // Convertir graus a radians\par
+  let q2 = q2_deg * Math.PI / 180; // Convertir graus a radians\par
+\par
+  // **Mostrar els contenidors de sortida**\par
+  document.getElementById('output').style.display = 'block';\par
+  document.getElementById('robotCanvas').style.display = 'block';\par
+\par
+  // Fase 1: F\'f3rmules\par
+  let output = "<div class='equation'>Les equacions per calcular la posici\'f3 final del robot s\'f3n:</div>";\par
+  output += "<div class='equation'>\\\\[ x = a_1 {{\field{\*\fldinst{HYPERLINK "\\\\\\\\cos(q_1)"}}{\fldrslt{\\\\cos(q_1)\ul0\cf0}}}}\f0\fs22  + a_2 {{\field{\*\fldinst{HYPERLINK "\\\\\\\\cos(q_1"}}{\fldrslt{\\\\cos(q_1\ul0\cf0}}}}\f0\fs22  + q_2) {{\field{\*\fldinst{HYPERLINK "\\\\\\\\]</div>"}}{\fldrslt{\\\\]</div>\ul0\cf0}}}}\f0\fs22 ";\par
+  output += "<div class='equation'>\\\\[ y = a_1 {{\field{\*\fldinst{HYPERLINK "\\\\\\\\sin(q_1)"}}{\fldrslt{\\\\sin(q_1)\ul0\cf0}}}}\f0\fs22  + a_2 {{\field{\*\fldinst{HYPERLINK "\\\\\\\\sin(q_1"}}{\fldrslt{\\\\sin(q_1\ul0\cf0}}}}\f0\fs22  + q_2) {{\field{\*\fldinst{HYPERLINK "\\\\\\\\]</div>"}}{\fldrslt{\\\\]</div>\ul0\cf0}}}}\f0\fs22 ";\par
+\par
+  // Fase 2: Substituir les variables\par
+  output += "<div class='equation'>Substitu\'efm els valors:</div>";\par
+  output += `<div class='equation'>\\\\[ x = $\{a1\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\cos($\{q1_deg\}\'b0)"}}{\fldrslt{\\\\cos($\{q1_deg\}\'b0)\ul0\cf0}}}}\f0\fs22  + $\{a2\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\cos($\{q1_deg\}\'b0"}}{\fldrslt{\\\\cos($\{q1_deg\}\'b0\ul0\cf0}}}}\f0\fs22  + $\{q2_deg\}\'b0) {{\field{\*\fldinst{HYPERLINK "\\\\\\\\]</div>`"}}{\fldrslt{\\\\]</div>`\ul0\cf0}}}}\f0\fs22 ;\par
+  output += `<div class='equation'>\\\\[ y = $\{a1\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\sin($\{q1_deg\}\'b0)"}}{\fldrslt{\\\\sin($\{q1_deg\}\'b0)\ul0\cf0}}}}\f0\fs22  + $\{a2\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\sin($\{q1_deg\}\'b0"}}{\fldrslt{\\\\sin($\{q1_deg\}\'b0\ul0\cf0}}}}\f0\fs22  + $\{q2_deg\}\'b0) {{\field{\*\fldinst{HYPERLINK "\\\\\\\\]</div>`"}}{\fldrslt{\\\\]</div>`\ul0\cf0}}}}\f0\fs22 ;\par
+\par
+  // Fase 3: C\'e0lcul num\'e8ric detallat\par
+  let x1 = a1 * Math.cos(q1);\par
+  let x2 = a2 * Math.cos(q1 + q2);\par
+  let y1 = a1 * Math.sin(q1);\par
+  let y2 = a2 * Math.sin(q1 + q2);\par
+\par
+  output += "<div class='equation'>Desglossant els c\'e0lculs:</div>";\par
+  output += `<div class='equation'>\\\\[ x_1 = a_1 {{\field{\*\fldinst{HYPERLINK "\\\\\\\\cos(q_1)"}}{\fldrslt{\\\\cos(q_1)\ul0\cf0}}}}\f0\fs22  = $\{a1\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\times \\\\\\\\cos($\{q1_deg\}\'b0)"}}{\fldrslt{\\\\times \\\\cos($\{q1_deg\}\'b0)\ul0\cf0}}}}\f0\fs22  = $\{x1.toFixed(2)\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\]</div>`"}}{\fldrslt{\\\\]</div>`\ul0\cf0}}}}\f0\fs22 ;\par
+  output += `<div class='equation'>\\\\[ x_2 = a_2 {{\field{\*\fldinst{HYPERLINK "\\\\\\\\cos(q_1"}}{\fldrslt{\\\\cos(q_1\ul0\cf0}}}}\f0\fs22  + q_2) = $\{a2\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\times \\\\\\\\cos($\{q1_deg\}\'b0"}}{\fldrslt{\\\\times \\\\cos($\{q1_deg\}\'b0\ul0\cf0}}}}\f0\fs22  + $\{q2_deg\}\'b0) = $\{x2.toFixed(2)\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\]</div>`"}}{\fldrslt{\\\\]</div>`\ul0\cf0}}}}\f0\fs22 ;\par
+  output += `<div class='equation'>\\\\[ y_1 = a_1 {{\field{\*\fldinst{HYPERLINK "\\\\\\\\sin(q_1)"}}{\fldrslt{\\\\sin(q_1)\ul0\cf0}}}}\f0\fs22  = $\{a1\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\times \\\\\\\\sin($\{q1_deg\}\'b0)"}}{\fldrslt{\\\\times \\\\sin($\{q1_deg\}\'b0)\ul0\cf0}}}}\f0\fs22  = $\{y1.toFixed(2)\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\]</div>`"}}{\fldrslt{\\\\]</div>`\ul0\cf0}}}}\f0\fs22 ;\par
+  output += `<div class='equation'>\\\\[ y_2 = a_2 {{\field{\*\fldinst{HYPERLINK "\\\\\\\\sin(q_1"}}{\fldrslt{\\\\sin(q_1\ul0\cf0}}}}\f0\fs22  + q_2) = $\{a2\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\times \\\\\\\\sin($\{q1_deg\}\'b0"}}{\fldrslt{\\\\times \\\\sin($\{q1_deg\}\'b0\ul0\cf0}}}}\f0\fs22  + $\{q2_deg\}\'b0) = $\{y2.toFixed(2)\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\]</div>`"}}{\fldrslt{\\\\]</div>`\ul0\cf0}}}}\f0\fs22 ;\par
+\par
+  // Resultat final\par
+  let x = x1 + x2;\par
+  let y = y1 + y2;\par
+\par
+  output += "<div class='equation'>Calculant els resultats num\'e8rics totals:</div>";\par
+  output += `<div class='equation'>\\\\[ x = $\{x.toFixed(2)\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\]</div>`"}}{\fldrslt{\\\\]</div>`\ul0\cf0}}}}\f0\fs22 ;\par
+  output += `<div class='equation'>\\\\[ y = $\{y.toFixed(2)\} {{\field{\*\fldinst{HYPERLINK "\\\\\\\\]</div>`"}}{\fldrslt{\\\\]</div>`\ul0\cf0}}}}\f0\fs22 ;\par
+\par
+  // Mostrar el resultat\par
+  document.getElementById('output').innerHTML = output;\par
+  MathJax.typeset(); // Renderitzar MathJax per mostrar les f\'f3rmules correctament\par
+\par
+  // Fase 4: Part gr\'e0fica\par
+  let canvas = document.getElementById('robotCanvas');\par
+  let ctx = canvas.getContext('2d');\par
+\par
+  ctx.clearRect(0, 0, canvas.width, canvas.height); // Netejar canvas\par
+\par
+  // Centre i escales\par
+  let centerX = canvas.width / 2;\par
+  let centerY = canvas.height / 2;\par
+  let scale = 80;\par
+\par
+  // Coordenades\par
+  let x1_screen = centerX + x1 * scale;\par
+  let y1_screen = centerY - y1 * scale;\par
+  let x2_screen = centerX + x * scale;\par
+  let y2_screen = centerY - y * scale;\par
+\par
+  // Dibuxar bra\'e7 1\par
+  ctx.beginPath();\par
+  ctx.moveTo(centerX, centerY);\par
+  ctx.lineTo(x1_screen, y1_screen);\par
+  ctx.strokeStyle = 'blue';\par
+  ctx.lineWidth = 5;\par
+  ctx.stroke();\par
+\par
+  // Dibuxar bra\'e7 2\par
+  ctx.beginPath();\par
+  ctx.moveTo(x1_screen, y1_screen);\par
+  ctx.lineTo(x2_screen, y2_screen);\par
+  ctx.strokeStyle = 'green';\par
+  ctx.lineWidth = 5;\par
+  ctx.stroke();\par
+\par
+  // Dibuxar els cercles als extrems\par
+  ctx.beginPath();\par
+  ctx.arc(centerX, centerY, 5, 0, 2 * Math.PI); // Base del bra\'e7\par
+  ctx.fillStyle = 'red';\par
+  ctx.fill();\par
+\par
+  ctx.beginPath();\par
+  ctx.arc(x1_screen, y1_screen, 5, 0, 2 * Math.PI); // Final del primer bra\'e7\par
+  ctx.fillStyle = 'red';\par
+  ctx.fill();\par
+\par
+  ctx.beginPath();\par
+  ctx.arc(x2_screen, y2_screen, 5, 0, 2 * Math.PI); // Final del segon bra\'e7\par
+  ctx.fillStyle = 'red';\par
+  ctx.fill();\par
+\}\par
+</script>\par
+</body>\par
+</html>\par
+\par
+}
+ 
